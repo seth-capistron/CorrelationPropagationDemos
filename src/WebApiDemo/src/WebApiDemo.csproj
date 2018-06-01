@@ -14,10 +14,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp" Version="4.6.0-preview1-26530-0" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0-preview1-34351" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0-preview1-T116" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0-preview1-T116" />
-    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0-preview1-T116" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0-preview1-T116" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0-preview1-T117" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0-preview1-T117" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0-preview1-T117" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0-preview1-T117" />
   </ItemGroup>
 
   <PropertyGroup>

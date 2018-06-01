@@ -17,7 +17,7 @@ namespace CorrelationPropagationDemos.WebApiDemo.Controllers
         {
             string incomingRequestActivityId = TryGetIncomingHeaderValue( "Request-Id" );
             string incomingRequestCv = TryGetIncomingHeaderValue( CorrelationVectorPropagationDelegates.HeaderName );
-            string incomingActivityId = Activity.Current?.Id;
+            string incomingActivityId = Activity.Current?.Id ?? "<not set>";
             string incomingCv = 
                 Program.UseActivityToPropagateCv ?
                     Activity.Current?.GetActivityExtension<CorrelationVectorExtension>()?.CorrelationVector.Value :
