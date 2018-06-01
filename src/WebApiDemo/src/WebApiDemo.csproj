@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
+    <RuntimeFrameworkVersion>2.2.0-preview1-26529-01</RuntimeFrameworkVersion> <!-- modify build in this line -->
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier> <!-- make self-contained -->
+    <NETCoreAppMaximumVersion>2.2</NETCoreAppMaximumVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp" Version="4.6.0-preview1-26530-0" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.0-preview1-34351" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0-preview1-T116" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.2.0-preview1-T116" />
+    <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.2.0-preview1-T116" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="2.2.0-preview1-T116" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <PackageConflictPreferredPackages>Microsoft.Private.CoreFx.NETCoreApp;runtime.win-x64.Microsoft.Private.CoreFx.NETCoreApp;$(PackageConflictPreferredPackages)</PackageConflictPreferredPackages>
+    <AssemblyName>CorrelationPropagationDemos.WebApiDemo</AssemblyName>
+  </PropertyGroup>
+
+</Project>
