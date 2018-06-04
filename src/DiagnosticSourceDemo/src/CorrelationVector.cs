@@ -2,6 +2,10 @@
 
 namespace CorrelationPropagationDemos.DiagnosticSourceDemo
 {
+    /// <summary>
+    /// This is a dummy implementation for demo'ing CV integration with ASP.NET and 
+    /// HTTP Client. Actual implementation would be used instead of this one.
+    /// </summary>
     public class CorrelationVector
     {
         private string _baseValue;

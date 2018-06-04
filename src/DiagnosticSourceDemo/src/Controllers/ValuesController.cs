@@ -23,14 +23,13 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                 HttpRequestMessage request = new HttpRequestMessage(
                     HttpMethod.Get,
                     "https://consumerstorefd.corp.microsoft.com/health/keepalive" );
-
                 
                 HttpResponseMessage response = await client.SendAsync( HttpContext.GetCorrelationVector(), request );
 
                 outgoingCv = TryGetHeaderValue( response.RequestMessage.Headers, "MS-CV" );
             }
 
-            // Return a payload that will give us a hint as to the values of Request-Id and CV throughout the pipe
+            // Return a payload that will give us a hint as to the values of the CV throughout the pipe
             //
             return
                 new KeyValuePair<string, string>[]
