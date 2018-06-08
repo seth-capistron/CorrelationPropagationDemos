@@ -18,6 +18,7 @@ namespace CorrelationVectorPropagation
                 services.AddHttpContextAccessor();
                 services.AddSingleton<IStartupFilter, CorrelationVectorStartupFilter>();
                 services.AddSingleton<CorrelationVectorDiagnosticListenerObserver>();
+                services.AddSingleton<CorrelationVectorTelemetryInitializer>();
             });
             return webHostBuilder;
         }
