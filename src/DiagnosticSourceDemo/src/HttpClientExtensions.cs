@@ -1,4 +1,5 @@
-﻿using System.Net.Http;
+﻿using CorrelationVectorPropagation;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace CorrelationPropagationDemos.DiagnosticSourceDemo

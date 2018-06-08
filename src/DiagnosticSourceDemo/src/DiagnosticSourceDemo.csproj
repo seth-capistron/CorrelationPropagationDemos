@@ -12,7 +12,10 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.Private.CoreFx.NETCoreApp" Version="4.4.0-beta-25213-0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CorrelationVectorPropagation\CorrelationVectorPropagation.csproj" />
   </ItemGroup>
 
 </Project>

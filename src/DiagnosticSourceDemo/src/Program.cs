@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Threading;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
+using CorrelationVectorPropagation;
 
 namespace CorrelationPropagationDemos.DiagnosticSourceDemo
 {

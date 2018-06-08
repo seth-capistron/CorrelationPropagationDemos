@@ -1,6 +1,6 @@
 ﻿using System.Net.Http;
 
-namespace CorrelationPropagationDemos.DiagnosticSourceDemo
+namespace CorrelationVectorPropagation
 {
     public static class HttpRequestMessageExtensions
     {

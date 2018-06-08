@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27705.2000
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticSourceDemo", "src\DiagnosticSourceDemo.csproj", "{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorrelationVectorPropagation", "CorrelationVectorPropagation\CorrelationVectorPropagation.csproj", "{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

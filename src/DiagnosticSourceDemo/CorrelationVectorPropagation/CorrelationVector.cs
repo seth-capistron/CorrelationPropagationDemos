@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CorrelationPropagationDemos.DiagnosticSourceDemo
+namespace CorrelationVectorPropagation
 {
     /// <summary>
     /// This is a dummy implementation for demo'ing CV integration with ASP.NET and 

@@ -4,9 +4,9 @@ using System.Diagnostics;
 using System.Net.Http;
 using Microsoft.AspNetCore.Http;
 
-namespace CorrelationPropagationDemos.DiagnosticSourceDemo
+namespace CorrelationVectorPropagation
 {
-    internal class CorrelationVectorDiagnosticListenerObserver : IObserver<DiagnosticListener>
+    public class CorrelationVectorDiagnosticListenerObserver : IObserver<DiagnosticListener>
     {
         private class CorrelationVectorDiagnosticSourceWriteObserver : IObserver<KeyValuePair<string, object>>
         {
@@ -23,11 +23,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                     // This happens on incoming requests to ASP.NET. Grab the MS-CV header and store
                     // it on the HttpContext.
                     //
-                    HttpContext httpContext =
-                        value.Value.GetType().GetProperty( "HttpContext" )?.GetValue( value.Value, null )
-                        as HttpContext;
-
-                    if ( httpContext == null )
+                    if (!(value.Value.GetType().GetProperty("HttpContext")?.GetValue(value.Value, null) is HttpContext httpContext))
                     {
                         return;
                     }
@@ -48,11 +44,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                     // Vector has been stored on the Request Message's properties and use it to
                     // stamp an MS-CV header (after incrementing the CV).
                     //
-                    HttpRequestMessage requestMessage =
-                        value.Value.GetType().GetProperty( "Request" )?.GetValue( value.Value, null )
-                        as HttpRequestMessage;
-
-                    if ( requestMessage == null )
+                    if (!(value.Value.GetType().GetProperty("Request")?.GetValue(value.Value, null) is HttpRequestMessage requestMessage))
                     {
                         return;
                     }
