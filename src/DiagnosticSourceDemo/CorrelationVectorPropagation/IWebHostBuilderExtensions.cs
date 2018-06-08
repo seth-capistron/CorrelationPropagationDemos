@@ -16,8 +16,9 @@ namespace CorrelationVectorPropagation
             {
                 // Required for automatic cV propogation
                 services.AddHttpContextAccessor();
+                services.AddSingleton<IStartupFilter, CorrelationVectorStartupFilter>();
+                services.AddSingleton<CorrelationVectorDiagnosticListenerObserver>();
             });
-            DiagnosticListener.AllListeners.Subscribe(new CorrelationVectorDiagnosticListenerObserver());
             return webHostBuilder;
         }
     }

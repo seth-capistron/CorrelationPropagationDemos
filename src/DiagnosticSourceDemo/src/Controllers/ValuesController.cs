@@ -15,19 +15,19 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KeyValuePair<string, string>>>> Get()
         {
-            string incomingRequestCv = TryGetIncomingHeaderValue( "MS-CV" );
+            string incomingRequestCv = TryGetIncomingHeaderValue("MS-CV");
             string incomingCv = HttpContext.GetCorrelationVector()?.Value;
             string outgoingCv;
 
-            using ( HttpClient client = new HttpClient() )
+            using (HttpClient client = new HttpClient())
             {
                 HttpRequestMessage request = new HttpRequestMessage(
                     HttpMethod.Get,
-                    "https://consumerstorefd.corp.microsoft.com/health/keepalive" );
-                
-                HttpResponseMessage response = await client.SendAsync( HttpContext.GetCorrelationVector(), request );
+                    "https://consumerstorefd.corp.microsoft.com/health/keepalive");
 
-                outgoingCv = TryGetHeaderValue( response.RequestMessage.Headers, "MS-CV" );
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                outgoingCv = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
             }
 
             // Return a payload that will give us a hint as to the values of the CV throughout the pipe
@@ -66,14 +66,14 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
         {
         }
 
-        string TryGetIncomingHeaderValue( string headerName )
+        string TryGetIncomingHeaderValue(string headerName)
         {
-            return Request.Headers.ContainsKey( headerName ) ? Request.Headers[headerName][0] : "<not set>";
+            return Request.Headers.ContainsKey(headerName) ? Request.Headers[headerName][0] : "<not set>";
         }
 
-        string TryGetHeaderValue( HttpRequestHeaders headers, string headerName )
+        string TryGetHeaderValue(HttpRequestHeaders headers, string headerName)
         {
-            if ( !headers.Contains( headerName ) )
+            if (!headers.Contains(headerName))
             {
                 return "<not set>";
             }
@@ -81,7 +81,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
             {
                 return string.Join(
                     ',',
-                    headers.GetValues( headerName ) );
+                    headers.GetValues(headerName));
             }
         }
     }
