@@ -17,7 +17,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
         {
             string incomingRequestCv = TryGetIncomingHeaderValue("MS-CV");
             string incomingCv = HttpContext.GetCorrelationVector()?.Value;
-            string outgoingCv;
+            string outgoingCv1, outgoingCv2;
 
             using (HttpClient client = new HttpClient())
             {
@@ -27,7 +27,15 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
 
                 HttpResponseMessage response = await client.SendAsync(request);
 
-                outgoingCv = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
+                outgoingCv1 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
+
+                request = new HttpRequestMessage(
+                    HttpMethod.Get,
+                    "https://consumerstorefd.corp.microsoft.com/health/keepalive");
+
+                response = await client.SendAsync(request);
+
+                outgoingCv2 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
             }
 
             // Return a payload that will give us a hint as to the values of the CV throughout the pipe
@@ -37,7 +45,8 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                 {
                     new KeyValuePair<string, string>("On the incoming request to the controller - Correlation Vector", incomingRequestCv),
                     new KeyValuePair<string, string>("On the HttpContext populated before controller code - Correlation Vector", incomingCv),
-                    new KeyValuePair<string, string>("On the outgoing request that the controller sent - Correlation Vector", outgoingCv),
+                    new KeyValuePair<string, string>("On the first outgoing request that the controller sent - Correlation Vector", outgoingCv1),
+                    new KeyValuePair<string, string>("On the second outgoing request that the controller sent - Correlation Vector", outgoingCv2),
                 };
         }
 

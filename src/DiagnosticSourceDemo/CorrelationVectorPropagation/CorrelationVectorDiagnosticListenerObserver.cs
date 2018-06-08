@@ -68,7 +68,6 @@ namespace CorrelationVectorPropagation
                     if (correlationVector != null)
                     {
                         requestMessage.Headers.Add("MS-CV", correlationVector.Increment());
-                        // TODO: Set the incremented cV back on the HttpContext for subsequent requests?
                     }
                     else
                     {
@@ -78,7 +77,6 @@ namespace CorrelationVectorPropagation
                         if (correlationVector != null)
                         {
                             requestMessage.Headers.Add("MS-CV", correlationVector.Increment());
-                            // TODO: Set the incremented cV back on the HttpContext for subsequent requests?
                         }
                         else
                         {
