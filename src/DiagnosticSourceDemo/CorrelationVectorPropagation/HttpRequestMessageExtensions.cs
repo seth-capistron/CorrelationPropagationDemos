@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Generic;
+using System.Net.Http;
+using System.Linq;
 
 namespace CorrelationVectorPropagation
 {
@@ -19,6 +21,26 @@ namespace CorrelationVectorPropagation
             {
                 return null;
             }
+        }
+
+        public static string GetCorrelationVectorHeader( this HttpRequestMessage requestMessage )
+        {
+            IEnumerable<string> cvValues;
+
+            if ( requestMessage.Headers.TryGetValues( "MS-CV", out cvValues ) )
+            {
+                return cvValues.First();
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static void AddDependencyInfo(this HttpRequestMessage requestMessage, string dependencyName, string dependencyType)
+        {
+            requestMessage.Properties.Add("DependencyName", dependencyName);
+            requestMessage.Properties.Add("DependencyType", dependencyType);
         }
     }
 }

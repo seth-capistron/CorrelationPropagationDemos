@@ -10,6 +10,8 @@ namespace CorrelationVectorPropagation
     {
         private class CorrelationVectorDiagnosticSourceWriteObserver : IObserver<KeyValuePair<string, object>>
         {
+            private object _outgoingRequestLoggingLock = new object();
+
             public void OnCompleted()
             { }
 
@@ -53,6 +55,8 @@ namespace CorrelationVectorPropagation
                         return;
                     }
 
+                    requestMessage.Properties.Add("TimeStamp", DateTime.Now.Ticks);
+
                     // If the application code explicitly passed along the cV header from the incoming request, then increment it prior to the outbound request.
                     CorrelationVector correlationVector = requestMessage.GetCorrelationVector();
                     if (correlationVector != null)
@@ -72,6 +76,75 @@ namespace CorrelationVectorPropagation
                         {
                             // TODO: Should never hit this case. Just in case we do, initialize a new cV here.
                         }
+                    }
+                }
+                else if (value.Key == "System.Net.Http.Response")
+                {
+                    // This happens after an outgoing Http request via Http Client completes. We can use
+                    // this as an opportunity to log the Outgoing Service Request event. Many of the
+                    // properties used for logging can be gleaned from the Http request and response.
+                    // Some of the properties need to be stamped on the request ahead of time by the
+                    // service owner, such as the Dependency information.
+                    //
+                    if (!(value.Value.GetType().GetProperty("Response")?.GetValue(value.Value, null) is HttpResponseMessage responseMessage))
+                    {
+                        return;
+                    }
+
+                    if (!(value.Value.GetType().GetProperty("TimeStamp")?.GetValue(value.Value, null) is long responseTimeStamp))
+                    {
+                        return;
+                    }
+
+                    long? latency = null;
+
+                    if (responseMessage.RequestMessage.Properties.ContainsKey("TimeStamp") &&
+                        responseMessage.RequestMessage.Properties["TimeStamp"] is long requestTimeStamp)
+                    {
+                        latency = (long)(DateTime.Now - new DateTime(requestTimeStamp)).TotalMilliseconds;
+                    }
+
+                    // Acquire a lock just so the console output isn't jumbled up by multiple threads
+                    //
+                    lock (_outgoingRequestLoggingLock)
+                    {
+                        // These properties can be gleaned from the Http request and response
+                        //
+                        Console.WriteLine("---------------------------------------");
+                        Console.WriteLine("Logging the Outgoing Service Request...");
+                        Console.WriteLine("Correlation Vector: {0}", responseMessage.RequestMessage.GetCorrelationVectorHeader());
+                        Console.WriteLine("Target Uri: {0}", responseMessage.RequestMessage.RequestUri.ToString());
+                        Console.WriteLine("Latency ms: {0}", latency.HasValue ? latency.Value.ToString() : string.Empty);
+                        // TODO - need code to be able to read the service error code - should this code be common or customizable?
+                        Console.WriteLine("Service error code: {0}", null);
+                        Console.WriteLine("Succeeded: {0}", responseMessage.IsSuccessStatusCode);
+                        Console.WriteLine("Request method: {0}", responseMessage.RequestMessage.Method);
+                        Console.WriteLine("Protocol Status Code: {0}", (int)responseMessage.StatusCode);
+                        Console.WriteLine("Response Size (bytes): {0}", responseMessage.Content.ReadAsByteArrayAsync().Result.Length);
+
+                        // These properties need to be stamped on the request by the service owner
+                        //
+                        if (responseMessage.RequestMessage.Properties.ContainsKey("DependencyName") &&
+                            responseMessage.RequestMessage.Properties["DependencyName"] is string dependencyName)
+                        {
+                            Console.WriteLine("Dependency Name: {0}", dependencyName);
+                        }
+
+                        if (responseMessage.RequestMessage.Properties.ContainsKey("DependencyType") &&
+                            responseMessage.RequestMessage.Properties["DependencyType"] is string dependencyType)
+                        {
+                            Console.WriteLine("Dependency Type: {0}", dependencyType);
+                        }
+
+                        if (responseMessage.RequestMessage.Properties.ContainsKey(nameof(DependencyOperationInfo)) &&
+                            responseMessage.RequestMessage.Properties[nameof(DependencyOperationInfo)] is DependencyOperationInfo dependencyInfo)
+                        {
+                            Console.WriteLine("Operation Name: {0}", dependencyInfo.OperationName);
+                            Console.WriteLine("Dependency Operation Name: {0}", dependencyInfo.DepenedencyOperationName);
+                            Console.WriteLine("Dependency Operation Version: {0}", dependencyInfo.DependencyOperationVersion);
+                        }
+
+                        Console.WriteLine("---------------------------------------");
                     }
                 }
             }
