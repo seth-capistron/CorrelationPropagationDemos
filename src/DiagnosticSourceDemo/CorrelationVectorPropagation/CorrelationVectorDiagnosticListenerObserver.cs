@@ -62,7 +62,7 @@ namespace CorrelationVectorPropagation
                     else
                     {
                         // This is the expected case where the application code is unaware of the cV and did not get it from the incoming request and set it on the 
-                        // outgoing request. Get the current cV from the HttpContext, increment it, and add it to the outgoing request.
+                        // outgoing request. Get the current cV from the AsyncLocal Instance, increment it, and add it to the outgoing request.
                         correlationVector = CorrelationVector.Current;
                         if (correlationVector != null)
                         {
