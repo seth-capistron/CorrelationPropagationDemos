@@ -8,22 +8,8 @@ namespace CorrelationVectorPropagation
 {
     public class CorrelationVectorDiagnosticListenerObserver : IObserver<DiagnosticListener>
     {
-        private readonly IHttpContextAccessor httpContextAccessor;
-
-        public CorrelationVectorDiagnosticListenerObserver(IHttpContextAccessor httpContextAccessor)
-        {
-            this.httpContextAccessor = httpContextAccessor;
-        }
-
         private class CorrelationVectorDiagnosticSourceWriteObserver : IObserver<KeyValuePair<string, object>>
         {
-            private IHttpContextAccessor httpContextAccessor;
-
-            public CorrelationVectorDiagnosticSourceWriteObserver(IHttpContextAccessor httpContextAccessor)
-            {
-                this.httpContextAccessor = httpContextAccessor;
-            }
-
             public void OnCompleted()
             { }
 
@@ -42,15 +28,19 @@ namespace CorrelationVectorPropagation
                         return;
                     }
 
+                    CorrelationVector correlationVector;
+
                     if (httpContext.Request.Headers.ContainsKey("MS-CV"))
                     {
-                        httpContext.SetCorrelationVector(
-                            CorrelationVector.Extend(httpContext.Request.Headers["MS-CV"][0]));
+                        correlationVector =
+                            CorrelationVector.Extend(httpContext.Request.Headers["MS-CV"][0]);
                     }
                     else
                     {
-                        httpContext.Items.Add(typeof(CorrelationVector), new CorrelationVector());
+                        correlationVector = new CorrelationVector();
                     }
+
+                    CorrelationVector.Current = correlationVector;
                 }
                 else if (value.Key == "System.Net.Http.HttpRequestOut.Start")
                 {
@@ -73,7 +63,7 @@ namespace CorrelationVectorPropagation
                     {
                         // This is the expected case where the application code is unaware of the cV and did not get it from the incoming request and set it on the 
                         // outgoing request. Get the current cV from the HttpContext, increment it, and add it to the outgoing request.
-                        correlationVector = this.httpContextAccessor.HttpContext.GetCorrelationVector();
+                        correlationVector = CorrelationVector.Current;
                         if (correlationVector != null)
                         {
                             requestMessage.Headers.Add("MS-CV", correlationVector.Increment());
@@ -98,7 +88,7 @@ namespace CorrelationVectorPropagation
             if (value.Name.Equals("HttpHandlerDiagnosticListener") ||
                 value.Name.Equals("Microsoft.AspNetCore"))
             {
-                value.Subscribe(new CorrelationVectorDiagnosticSourceWriteObserver(this.httpContextAccessor));
+                value.Subscribe(new CorrelationVectorDiagnosticSourceWriteObserver());
             }
         }
     }

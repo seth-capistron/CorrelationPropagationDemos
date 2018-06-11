@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace CorrelationVectorPropagation
 {
@@ -11,9 +12,26 @@ namespace CorrelationVectorPropagation
         private string _baseValue;
         private int _extension = 0;
 
+        static AsyncLocal<CorrelationVector> s_current = new AsyncLocal<CorrelationVector>();
+
         public CorrelationVector()
         {
             _baseValue = Guid.NewGuid().ToString().Substring( 0, 13 ).Replace( "-", string.Empty );
+        }
+
+        public static CorrelationVector Current
+        {
+            get
+            {
+                return s_current.Value;
+            }
+            set
+            {
+                if (value != null)
+                {
+                    s_current.Value = value;
+                }
+            }
         }
 
         public string Value
