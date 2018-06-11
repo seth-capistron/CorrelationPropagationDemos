@@ -2,6 +2,7 @@
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using CorrelationVectorPropagation;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CorrelationPropagationDemos.DiagnosticSourceDemo
@@ -14,19 +15,27 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
         [HttpGet]
         public async Task<ActionResult<IEnumerable<KeyValuePair<string, string>>>> Get()
         {
-            string incomingRequestCv = TryGetIncomingHeaderValue( "MS-CV" );
+            string incomingRequestCv = TryGetIncomingHeaderValue("MS-CV");
             string incomingCv = HttpContext.GetCorrelationVector()?.Value;
-            string outgoingCv;
+            string outgoingCv1, outgoingCv2;
 
-            using ( HttpClient client = new HttpClient() )
+            using (HttpClient client = new HttpClient())
             {
                 HttpRequestMessage request = new HttpRequestMessage(
                     HttpMethod.Get,
-                    "https://consumerstorefd.corp.microsoft.com/health/keepalive" );
-                
-                HttpResponseMessage response = await client.SendAsync( HttpContext.GetCorrelationVector(), request );
+                    "https://consumerstorefd.corp.microsoft.com/health/keepalive");
 
-                outgoingCv = TryGetHeaderValue( response.RequestMessage.Headers, "MS-CV" );
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                outgoingCv1 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
+
+                request = new HttpRequestMessage(
+                    HttpMethod.Get,
+                    "https://consumerstorefd.corp.microsoft.com/health/keepalive");
+
+                response = await client.SendAsync(request);
+
+                outgoingCv2 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
             }
 
             // Return a payload that will give us a hint as to the values of the CV throughout the pipe
@@ -36,7 +45,8 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                 {
                     new KeyValuePair<string, string>("On the incoming request to the controller - Correlation Vector", incomingRequestCv),
                     new KeyValuePair<string, string>("On the HttpContext populated before controller code - Correlation Vector", incomingCv),
-                    new KeyValuePair<string, string>("On the outgoing request that the controller sent - Correlation Vector", outgoingCv),
+                    new KeyValuePair<string, string>("On the first outgoing request that the controller sent - Correlation Vector", outgoingCv1),
+                    new KeyValuePair<string, string>("On the second outgoing request that the controller sent - Correlation Vector", outgoingCv2),
                 };
         }
 
@@ -65,14 +75,14 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
         {
         }
 
-        string TryGetIncomingHeaderValue( string headerName )
+        string TryGetIncomingHeaderValue(string headerName)
         {
-            return Request.Headers.ContainsKey( headerName ) ? Request.Headers[headerName][0] : "<not set>";
+            return Request.Headers.ContainsKey(headerName) ? Request.Headers[headerName][0] : "<not set>";
         }
 
-        string TryGetHeaderValue( HttpRequestHeaders headers, string headerName )
+        string TryGetHeaderValue(HttpRequestHeaders headers, string headerName)
         {
-            if ( !headers.Contains( headerName ) )
+            if (!headers.Contains(headerName))
             {
                 return "<not set>";
             }
@@ -80,7 +90,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
             {
                 return string.Join(
                     ',',
-                    headers.GetValues( headerName ) );
+                    headers.GetValues(headerName));
             }
         }
     }
