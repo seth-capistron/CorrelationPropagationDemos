@@ -22,7 +22,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
             string incomingCv = CorrelationVector.Current?.Value ?? "<not set>";
             string outgoingCv1, outgoingCv2;
 
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(new ConsumerStoreHandler()))
             {
                 // Issue two request synchronously
                 //
@@ -30,7 +30,10 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                     HttpMethod.Get,
                     "https://consumerstorefd.corp.microsoft.com/health/keepalive");
 
-                HttpResponseMessage response = await client.SendAsync(request);
+                // Pass dependency info along to a SendAsync extension method so the info 
+                // is stamped on the request and it can be used for logging.
+                //
+                HttpResponseMessage response = await client.SendAsync(request, "Get_Values", "KeepAlive", "v1.0" );
 
                 outgoingCv1 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
 
@@ -38,7 +41,7 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                     HttpMethod.Get,
                     "https://consumerstorefd.corp.microsoft.com/health/keepalive");
 
-                response = await client.SendAsync(request);
+                response = await client.SendAsync(request, "Get_Values", "KeepAlive", "v1.0" );
 
                 outgoingCv2 = TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV");
             }
@@ -109,9 +112,9 @@ namespace CorrelationPropagationDemos.DiagnosticSourceDemo
                     HttpMethod.Get,
                     "https://consumerstorefd.corp.microsoft.com/health/keepalive" );
 
-            using (HttpClient client = new HttpClient())
+            using (HttpClient client = new HttpClient(new ConsumerStoreHandler()))
             {
-                var response = client.SendAsync(request).Result;
+                var response = client.SendAsync(request, "Async_Issue_Request", "KeepAlive", "v1.0").Result;
 
                 s_outgoingCorrelationVectors.Add(TryGetHeaderValue(response.RequestMessage.Headers, "MS-CV"));
             }
