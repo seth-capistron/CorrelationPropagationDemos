@@ -19,7 +19,7 @@ namespace CorrelationVectorPropagation
                 new DependencyOperationInfo()
                 {
                     OperationName = operationName,
-                    DepenedencyOperationName = dependencyOperationName,
+                    DependencyOperationName = dependencyOperationName,
                     DependencyOperationVersion = dependencyOperationVersion
                 });
 

@@ -140,7 +140,7 @@ namespace CorrelationVectorPropagation
                             responseMessage.RequestMessage.Properties[nameof(DependencyOperationInfo)] is DependencyOperationInfo dependencyInfo)
                         {
                             Console.WriteLine("Operation Name: {0}", dependencyInfo.OperationName);
-                            Console.WriteLine("Dependency Operation Name: {0}", dependencyInfo.DepenedencyOperationName);
+                            Console.WriteLine("Dependency Operation Name: {0}", dependencyInfo.DependencyOperationName);
                             Console.WriteLine("Dependency Operation Version: {0}", dependencyInfo.DependencyOperationVersion);
                         }
 
