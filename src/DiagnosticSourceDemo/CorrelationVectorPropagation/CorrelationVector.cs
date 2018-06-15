@@ -19,6 +19,8 @@ namespace CorrelationVectorPropagation
             _baseValue = Guid.NewGuid().ToString().Substring( 0, 13 ).Replace( "-", string.Empty );
         }
 
+        public const string HeaderName = "MS-CV";
+
         public static CorrelationVector Current
         {
             get
