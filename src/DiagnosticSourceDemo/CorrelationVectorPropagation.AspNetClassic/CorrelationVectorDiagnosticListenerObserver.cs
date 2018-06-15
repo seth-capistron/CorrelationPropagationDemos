@@ -55,6 +55,10 @@ namespace CorrelationVectorPropagation.AspNetClassic
                         return;
                     }
 
+                    // Record the current date so latency can be calculated
+                    //
+                    requestMessage.Date = DateTime.Now;
+
                     if (!string.IsNullOrWhiteSpace(requestMessage.Headers["MS-CV"]))
                     {
                         // Request already has a CV. This is expected if an HttpClient SendAsync extension method
@@ -63,15 +67,14 @@ namespace CorrelationVectorPropagation.AspNetClassic
                         return;
                     }
 
-                    var correlationVector = CorrelationVector.Current;
-                    if (correlationVector != null)
+                    if (CorrelationVector.Current == null)
                     {
-                        requestMessage.Headers.Add("MS-CV", correlationVector.Increment());
+                        // Is this the right thing if there is no CV? Just create one?
+                        //
+                        CorrelationVector.Current = new CorrelationVector();
                     }
-                    else
-                    {
-                        // TODO: Should never hit this case. If we do, should we create a new CV?
-                    }
+
+                    requestMessage.Headers.Add("MS-CV", CorrelationVector.Current.Increment());
                 }
                 else if (value.Key == "System.Net.Http.Desktop.HttpRequestOut.Ex.Stop")
                 {
@@ -98,7 +101,7 @@ namespace CorrelationVectorPropagation.AspNetClassic
 
             private void LogHttpOutComplete(HttpWebRequest requestMessage, HttpStatusCode responseStatus, string responseSize)
             {
-                long latency = (long)(requestMessage.Date - DateTime.Now).TotalMilliseconds;
+                long latency = (long)(DateTime.Now - requestMessage.Date).TotalMilliseconds;
                 string correlationVector = requestMessage.Headers["MS-CV"];
                 DependencyOperationInfo dependencyOperationInfo = null;
 
