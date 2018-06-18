@@ -40,6 +40,33 @@ namespace CorrelationVectorPropagation.AspNetClassic
                     CorrelationVector.Current = correlationVector;
                     HttpContext.Current.Items.Add("CorrelationVector.Current", correlationVector);
                 }
+                else if (value.Key == "CorrelationVectorPropagation.AspNetClassic.WebApi.RequestIn.Start")
+                {
+                    // This happens on incoming requests that are captured by a custom Delegating
+                    // Handler. This is needed for self-hosted WebApi since AspNet does not fire
+                    // events for incoming requests.
+                    //
+                    if (!(value.Value.GetType().GetProperty("Request")?.GetValue(value.Value, null) is HttpRequestMessage requestMessage))
+                    {
+                        return;
+                    }
+
+                    string msCvHeader = requestMessage?.GetCorrelationVectorHeader();
+
+                    CorrelationVector correlationVector;
+
+                    if (!string.IsNullOrWhiteSpace(msCvHeader))
+                    {
+                        correlationVector = CorrelationVector.Extend(msCvHeader);
+                    }
+                    else
+                    {
+                        correlationVector = new CorrelationVector();
+                    }
+
+                    CorrelationVector.Current = correlationVector;
+                    HttpContext.Current?.Items.Add("CorrelationVector.Current", correlationVector);
+                }
                 else if (value.Key == "Microsoft.AspNet.HttpReqIn.ActivityLost.Stop")
                 {
                     // This is a work-around for a known issue due to hop between managed and
