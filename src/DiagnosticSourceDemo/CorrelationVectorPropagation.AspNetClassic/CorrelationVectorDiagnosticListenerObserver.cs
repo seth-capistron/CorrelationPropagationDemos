@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Http;
 using System.Web;
 
 namespace CorrelationVectorPropagation.AspNetClassic
@@ -38,6 +39,33 @@ namespace CorrelationVectorPropagation.AspNetClassic
 
                     CorrelationVector.Current = correlationVector;
                     HttpContext.Current.Items.Add("CorrelationVector.Current", correlationVector);
+                }
+                else if (value.Key == "CorrelationVectorPropagation.AspNetClassic.WebApi.RequestIn.Start")
+                {
+                    // This happens on incoming requests that are captured by a custom Delegating
+                    // Handler. This is needed for self-hosted WebApi since AspNet does not fire
+                    // events for incoming requests.
+                    //
+                    if (!(value.Value.GetType().GetProperty("Request")?.GetValue(value.Value, null) is HttpRequestMessage requestMessage))
+                    {
+                        return;
+                    }
+
+                    string msCvHeader = requestMessage?.GetCorrelationVectorHeader();
+
+                    CorrelationVector correlationVector;
+
+                    if (!string.IsNullOrWhiteSpace(msCvHeader))
+                    {
+                        correlationVector = CorrelationVector.Extend(msCvHeader);
+                    }
+                    else
+                    {
+                        correlationVector = new CorrelationVector();
+                    }
+
+                    CorrelationVector.Current = correlationVector;
+                    HttpContext.Current?.Items.Add("CorrelationVector.Current", correlationVector);
                 }
                 else if (value.Key == "Microsoft.AspNet.HttpReqIn.ActivityLost.Stop")
                 {
@@ -78,6 +106,9 @@ namespace CorrelationVectorPropagation.AspNetClassic
                 }
                 else if (value.Key == "System.Net.Http.Desktop.HttpRequestOut.Ex.Stop")
                 {
+                    // This happens at the end of some outgoing Http requests, like when the
+                    // response is await'ed and the response has no body.
+                    //
                     if (!(value.Value.GetType().GetProperty("Request")?.GetValue(value.Value, null) is HttpWebRequest requestMessage) ||
                         !(value.Value.GetType().GetProperty("StatusCode")?.GetValue(value.Value, null) is HttpStatusCode responseStatusCode) ||
                         !(value.Value.GetType().GetProperty("Headers")?.GetValue(value.Value, null) is WebHeaderCollection responseHeaders))
@@ -89,6 +120,8 @@ namespace CorrelationVectorPropagation.AspNetClassic
                 }
                 else if (value.Key == "System.Net.Http.Desktop.HttpRequestOut.Stop")
                 {
+                    // This happens for the remainder of outgoing Http requests.
+                    //
                     if (!(value.Value.GetType().GetProperty("Request")?.GetValue(value.Value, null) is HttpWebRequest requestMessage) ||
                         !(value.Value.GetType().GetProperty("Response")?.GetValue(value.Value, null) is HttpWebResponse responseMessage))
                     {
@@ -157,7 +190,8 @@ namespace CorrelationVectorPropagation.AspNetClassic
         public void OnNext(DiagnosticListener value)
         {
             if (value.Name == "Microsoft.AspNet.TelemetryCorrelation" ||
-                value.Name == "System.Net.Http.Desktop")
+                value.Name == "System.Net.Http.Desktop" ||
+                value.Name == "CorrelationVectorPropagation.AspNetClassic.WebApi.RequestIn")
             {
                 value.Subscribe(new CorrelationVectorDiagnosticSourceWriteObserver());
             }
