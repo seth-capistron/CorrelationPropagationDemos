@@ -9,9 +9,9 @@ namespace WebApiApplication
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-
+            
             // Register the Diagnostic Listener Observer, which will consume and propagate CVs and
-            // can also do logging
+            // can also do logging.
             //
             DiagnosticListener.AllListeners.Subscribe(new CorrelationVectorDiagnosticListenerObserver());
         }

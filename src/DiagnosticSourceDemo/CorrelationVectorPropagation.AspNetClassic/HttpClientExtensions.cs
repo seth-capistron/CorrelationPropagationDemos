@@ -13,7 +13,7 @@ namespace CorrelationVectorPropagation.AspNetClassic
         /// Use this extension method to ensure Outgoing Service Requests get logged
         /// with the correct Dependency Information.
         /// </summary>
-        public static async Task<HttpResponseMessage> SendAsync(
+        public static Task<HttpResponseMessage> SendAsync(
             this HttpClient httpClient,
             HttpRequestMessage requestMessage,
             string operationName,
@@ -45,7 +45,7 @@ namespace CorrelationVectorPropagation.AspNetClassic
                     dependencyOperationInfo);
             }
 
-            return await httpClient.SendAsync(requestMessage);
+            return httpClient.SendAsync(requestMessage);
         }
     }
 }

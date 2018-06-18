@@ -46,7 +46,6 @@
   <ItemGroup>
     <Compile Include="CorrelationVectorDiagnosticListenerObserver.cs" />
     <Compile Include="HttpClientExtensions.cs" />
-    <Compile Include="InboundInstrumentationHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
