@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorrelationVectorPropagatio
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiApplication", "WebApiApplication\WebApiApplication.csproj", "{EF453288-3A1D-4208-9E84-13E95C97C5E1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWebApplication", "MvcWebApplication\MvcWebApplication.csproj", "{B6F947C8-D646-4754-9A47-8935633641EC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OwinSelfHostApplication", "OwinSelfHostApplication\OwinSelfHostApplication.csproj", "{EB35FBD8-EE8A-4AEB-849D-8CD9FB11CDE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B6F947C8-D646-4754-9A47-8935633641EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B6F947C8-D646-4754-9A47-8935633641EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B6F947C8-D646-4754-9A47-8935633641EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B6F947C8-D646-4754-9A47-8935633641EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB35FBD8-EE8A-4AEB-849D-8CD9FB11CDE2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB35FBD8-EE8A-4AEB-849D-8CD9FB11CDE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB35FBD8-EE8A-4AEB-849D-8CD9FB11CDE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB35FBD8-EE8A-4AEB-849D-8CD9FB11CDE2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
