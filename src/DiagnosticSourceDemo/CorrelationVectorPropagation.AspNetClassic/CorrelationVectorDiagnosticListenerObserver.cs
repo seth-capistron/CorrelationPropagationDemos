@@ -43,7 +43,9 @@ namespace CorrelationVectorPropagation.AspNetClassic
                 else if (value.Key == "Microsoft.AspNet.HttpReqIn.ActivityLost.Stop")
                 {
                     // This is a work-around for a known issue due to hop between managed and
-                    // unmanaged code.
+                    // unmanaged code. Per Liudmila Molkova who pointed me to the code that emits
+                    // the event...
+                    // https://github.com/aspnet/Microsoft.AspNet.TelemetryCorrelation/blob/master/src/Microsoft.AspNet.TelemetryCorrelation/TelemetryCorrelationHttpModule.cs
                     //
                     CorrelationVector.Current = HttpContext.Current.Items["CorrelationVector.Current"] as CorrelationVector;
                 }
