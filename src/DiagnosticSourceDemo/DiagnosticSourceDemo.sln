@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27705.2000
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiagnosticSourceDemo", "src\DiagnosticSourceDemo.csproj", "{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetCoreApiApplication", "AspNetCoreApiApplication\AspNetCoreApiApplication.csproj", "{D5E41C03-C543-40BB-8EA3-63C8DBD4ECDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorrelationVectorPropagation", "CorrelationVectorPropagation\CorrelationVectorPropagation.csproj", "{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorrelationVectorPropagation", "CorrelationVectorPropagation\CorrelationVectorPropagation.csproj", "{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CorrelationVectorPropagation.AspNetCore", "CorrelationVectorPropagation.AspNetCore\CorrelationVectorPropagation.AspNetCore.csproj", "{E9767B46-1FE9-43ED-8172-1FA298ED34B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CorrelationVectorPropagation.AspNetClassic", "CorrelationVectorPropagation.AspNetClassic\CorrelationVectorPropagation.AspNetClassic.csproj", "{4B2ABFC2-3237-48AA-B938-A87B1DCD2CC4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApiApplication", "WebApiApplication\WebApiApplication.csproj", "{EF453288-3A1D-4208-9E84-13E95C97C5E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +27,18 @@ Global
 		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B876B204-9FFB-4D1F-B0F8-DE9D51E1806C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9767B46-1FE9-43ED-8172-1FA298ED34B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9767B46-1FE9-43ED-8172-1FA298ED34B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9767B46-1FE9-43ED-8172-1FA298ED34B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9767B46-1FE9-43ED-8172-1FA298ED34B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B2ABFC2-3237-48AA-B938-A87B1DCD2CC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B2ABFC2-3237-48AA-B938-A87B1DCD2CC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B2ABFC2-3237-48AA-B938-A87B1DCD2CC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B2ABFC2-3237-48AA-B938-A87B1DCD2CC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF453288-3A1D-4208-9E84-13E95C97C5E1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

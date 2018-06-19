@@ -27,7 +27,7 @@ namespace CorrelationVectorPropagation
         {
             IEnumerable<string> cvValues;
 
-            if ( requestMessage.Headers.TryGetValues( "MS-CV", out cvValues ) )
+            if ( requestMessage.Headers.TryGetValues( CorrelationVector.HeaderName, out cvValues ) )
             {
                 return cvValues.First();
             }
@@ -35,12 +35,6 @@ namespace CorrelationVectorPropagation
             {
                 return null;
             }
-        }
-
-        public static void AddDependencyInfo(this HttpRequestMessage requestMessage, string dependencyName, string dependencyType)
-        {
-            requestMessage.Properties.Add("DependencyName", dependencyName);
-            requestMessage.Properties.Add("DependencyType", dependencyType);
         }
     }
 }

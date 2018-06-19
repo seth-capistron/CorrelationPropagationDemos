@@ -12,11 +12,12 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="Microsoft.AspNetCore.App" />
+    <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1.0" />
   	<PackageReference Include="Microsoft.AspNetCore.Http" Version="2.1.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.1.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.1.0" />
-	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.1.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting.Abstractions" Version="2.1.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.Hosting.Server.Abstractions" Version="2.1.0" />
 	  <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.1.0" />
 	  <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.1.0" />
@@ -31,6 +32,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CorrelationVectorPropagation.AspNetCore\CorrelationVectorPropagation.AspNetCore.csproj" />
     <ProjectReference Include="..\CorrelationVectorPropagation\CorrelationVectorPropagation.csproj" />
   </ItemGroup>
 
